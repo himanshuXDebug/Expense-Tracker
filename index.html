@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Normal Project</title>
+    <link rel="stylesheet" href="./style.css"/>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">💰 Expense Tracker</div>
+                <div class="header-controls">
+                    <button class="btn btn-danger" onclick="resetAllData()">Reset All Data</button>
+                    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+                        <span id="theme-icon">🌙</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Navigation -->
+        <nav class="nav">
+            <div class="nav-item active" onclick="showSection('dashboard')">📊 Dashboard</div>
+            <div class="nav-item" onclick="showSection('expenses')">💳 Expenses</div>
+            <div class="nav-item" onclick="showSection('reminders')">⏰ Reminders</div>
+        </nav>
+
+        <!-- Notification Permission Banner -->
+        <div id="notification-banner" class="notification-banner hidden">
+            <p>Enable notifications to receive reminders and overdue payment alerts!</p>
+            <button class="btn btn-secondary mt-1" onclick="requestNotificationPermission()">Enable Notifications</button>
+        </div>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard-section" class="section">
+            <div class="grid grid-3 mb-1">
+                <div class="summary-card">
+                    <div class="summary-amount" id="total-expenses">₹0</div>
+                    <div class="summary-label">Total Expenses</div>
+                </div>
+                <div class="summary-card" style="background: linear-gradient(135deg, var(--success), #059669);">
+                    <div class="summary-amount" id="total-paid">₹0</div>
+                    <div class="summary-label">Total Paid</div>
+                </div>
+                <div class="summary-card" style="background: linear-gradient(135deg, var(--warning), #d97706);">
+                    <div class="summary-amount" id="total-due">₹0</div>
+                    <div class="summary-label">Total Due</div>
+                </div>
+            </div>
+
+            <div class="grid grid-2">
+                <div class="card">
+                    <h3 class="mb-1">Recent Expenses</h3>
+                    <div id="recent-expenses"></div>
+                </div>
+                <div class="card">
+                    <h3 class="mb-1">Upcoming Reminders</h3>
+                    <div id="upcoming-reminders"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Expenses Section -->
+        <section id="expenses-section" class="section hidden">
+            <div class="card mb-1">
+                <div class="modal-header">
+                    <h2 class="modal-title">Expense Management</h2>
+                    <button class="btn btn-primary" onclick="openModal('expense-modal')">+ Add Expense</button>
+                </div>
+
+                <!-- Filters -->
+                <div class="filters">
+                    <select class="form-select" id="category-filter" onchange="filterExpenses()">
+                        <option value="">All Categories</option>
+                        <option value="Food">Food</option>
+                        <option value="Transport">Transport</option>
+                        <option value="Utilities">Utilities</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Healthcare">Healthcare</option>
+                        <option value="Shopping">Shopping</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <select class="form-select" id="status-filter" onchange="filterExpenses()">
+                        <option value="">All Status</option>
+                        <option value="Paid">Paid</option>
+                        <option value="Due">Due</option>
+                    </select>
+                    <select class="form-select" id="sort-filter" onchange="filterExpenses()">
+                        <option value="date-desc">Newest First</option>
+                        <option value="date-asc">Oldest First</option>
+                        <option value="amount-desc">Highest Amount</option>
+                        <option value="amount-asc">Lowest Amount</option>
+                    </select>
+                </div>
+
+                <!-- Expenses List -->
+                <div id="expenses-list"></div>
+            </div>
+        </section>
+
+        <!-- Reminders Section -->
+        <section id="reminders-section" class="section hidden">
+            <div class="card">
+                <div class="modal-header">
+                    <h2 class="modal-title">Reminder Management</h2>
+                    <button class="btn btn-primary" onclick="openModal('reminder-modal')">+ Add Reminder</button>
+                </div>
+
+                <!-- Reminders List -->
+                <div id="reminders-list"></div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Add Expense Modal -->
+    <div id="expense-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Add New Expense</h3>
+                <button class="close-btn" onclick="closeModal('expense-modal')">&times;</button>
+            </div>
+            <form id="expense-form" onsubmit="addExpense(event)">
+                <div class="form-group">
+                    <label class="form-label">Title</label>
+                    <input type="text" class="form-input" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Amount (₹)</label>
+                    <input type="number" class="form-input" name="amount" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Category</label>
+                    <select class="form-select" name="category" required>
+                        <option value="">Select Category</option>
+                        <option value="Food">Food</option>
+                        <option value="Transport">Transport</option>
+                        <option value="Utilities">Utilities</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Healthcare">Healthcare</option>
+                        <option value="Shopping">Shopping</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Date</label>
+                    <input type="date" class="form-input" name="date" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Status</label>
+                    <select class="form-select" name="status" onchange="toggleDueDate(this)" required>
+                        <option value="">Select Status</option>
+                        <option value="Paid">Paid</option>
+                        <option value="Due">Due</option>
+                    </select>
+                </div>
+                <div class="form-group hidden" id="due-date-group">
+                    <label class="form-label">Due Date</label>
+                    <input type="date" class="form-input" name="dueDate">
+                </div>
+                <button type="submit" class="btn btn-primary">Add Expense</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Reminder Modal -->
+    <div id="reminder-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Add New Reminder</h3>
+                <button class="close-btn" onclick="closeModal('reminder-modal')">&times;</button>
+            </div>
+            <form id="reminder-form" onsubmit="addReminder(event)">
+                <div class="form-group">
+                    <label class="form-label">Message</label>
+                    <input type="text" class="form-input" name="message" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Date & Time</label>
+                    <input type="datetime-local" class="form-input" name="datetime" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">
+                        <input type="checkbox" name="repeat" style="margin-right: 0.5rem;">
+                        Repeat Daily
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Reminder</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div id="error-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">⚠️ Error</h3>
+                <button class="close-btn" onclick="closeModal('error-modal')">&times;</button>
+            </div>
+            <div id="error-message"></div>
+            <button class="btn btn-primary mt-1" onclick="closeModal('error-modal')">OK</button>
+        </div>
+    </div>
+<script src="./main.js"></script>
+</body>
+</html>
