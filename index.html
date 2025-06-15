@@ -104,7 +104,7 @@
         <!-- Reminders Section -->
         <section id="reminders-section" class="section hidden" style="padding: 1rem;">
             <div class="card"
-                style="max-width: 100%; margin: auto; padding: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-radius: 8px; background-color: #fff;">
+                style="max-width: 100%; margin: auto; padding: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-radius: 8px; ;">
 
                 <!-- Header -->
                 <div class="modal-header"
@@ -117,8 +117,8 @@
                             <span id="info-icon"
                                 style="display: inline-block; width: 24px; height: 24px; line-height: 24px; text-align: center; border-radius: 50%; background-color: #007bff; color: white; font-weight: bold; cursor: pointer;"
                                 onclick="toggleReminderInfo()" title="Click for more info">i</span>
-                            <div id="reminder-info-box"
-                                style="display: none; position: absolute; top: 30px; left: 0; width: 260px; padding: 10px; background-color: #f8f9fa; border: 1px solid #ccc; border-radius: 6px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); font-size: 14px; z-index: 100;">
+                            <div id="reminder-info-box" class="rep-sec"
+                                style="display: none; position: absolute; top: 30px; left: 0; width: 260px; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); font-size: 14px; z-index: 100; backdrop-filter: blur(30px);">
                                 ⚠️ This section is still under development.<br>
                                 Some features may not work as expected.<br>
                                 We appreciate your patience please report bugs or suggestions via the Report button!
@@ -133,14 +133,12 @@
                         <div style="position: relative;">
                             <button class="btn btn-secondary" onclick="toggleReportMenu()">Report ▼</button>
                             <div id="report-dropdown"
-                                style="display: none; position: absolute; right: 0; top: 36px; background: white; border: 1px solid #ccc; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); z-index: 101; width: 200px;">
+                                style="display: none; position: absolute; right: 0; top: 36px; background: rgb(72, 46, 46); border: 1px solid #ccc; border-radius: 6px; box-shadow: 0 2px 8px rgba(130, 127, 127, 0.1); z-index: 101; width: 200px; color: aliceblue;">
                                 <ul style="list-style: none; margin: 0; padding: 0;">
-                                    <li onclick="openReportForm('Bug')" style="padding: 10px; cursor: pointer;">Report a
-                                        Bug</li>
-                                    <li onclick="openReportForm('Feature')" style="padding: 10px; cursor: pointer;">
-                                        Request a Feature</li>
-                                    <li onclick="openReportForm('Feedback')" style="padding: 10px; cursor: pointer;">
-                                        Other Feedback</li>
+                                    <li class="report-option" onclick="openReportForm('Bug')">Report a Bug</li>
+                                    <li class="report-option" onclick="openReportForm('Feature')">Request a Feature</li>
+                                    <li class="report-option" onclick="openReportForm('Feedback')">Other Feedback</li>
+
                                 </ul>
                             </div>
                         </div>
