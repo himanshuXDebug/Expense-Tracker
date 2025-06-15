@@ -662,3 +662,55 @@ if ("serviceWorker" in navigator) {
     console.log("App loaded successfully");
   });
 }
+
+// Toogle notification
+  function toggleReminderInfo() {
+    const infoBox = document.getElementById("reminder-info-box");
+    infoBox.style.display = infoBox.style.display === "block" ? "none" : "block";
+  }
+
+  function toggleReportMenu() {
+    const dropdown = document.getElementById("report-dropdown");
+    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+  }
+
+  function openReportForm(type) {
+
+    document.getElementById("report-dropdown").style.display = "none";
+
+    document.getElementById("report-form-container").style.display = "block";
+    document.getElementById("report-form-title").innerText = `Report ${type}`;
+    
+    document.getElementById("report-message").value = "";
+    document.getElementById("report-status").style.display = "none";
+  }
+
+  function submitReportForm() {
+    const message = document.getElementById("report-message").value.trim();
+    if (!message) {
+      alert("Please enter a message before submitting.");
+      return;
+    }
+
+    document.getElementById("report-status").style.color = "#555";
+    document.getElementById("report-status").innerText = "⏳ Submitting your report...";
+    document.getElementById("report-status").style.display = "block";
+
+    setTimeout(() => {
+      document.getElementById("report-status").style.color = "green";
+      document.getElementById("report-status").innerText = "✅ Thank you! Your report has been received.";
+      document.getElementById("report-form-container").style.display = "none";
+    }, 2000);
+  }
+
+  document.addEventListener("click", function (event) {
+    const isReportBtn = event.target.closest(".btn.btn-secondary");
+    const isDropdown = event.target.closest("#report-dropdown");
+    if (!isReportBtn && !isDropdown) {
+      document.getElementById("report-dropdown").style.display = "none";
+    }
+  });
+
+  function openModal(id) {
+    alert("Reminder modal will open (stub function).");
+  }
